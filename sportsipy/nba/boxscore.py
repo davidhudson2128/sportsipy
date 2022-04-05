@@ -1324,13 +1324,21 @@ class Boxscore:
         Percentage ranges from 0-1.
         """
         try:
-            result = float(self.home_two_point_field_goals) / \
-                float(self.home_two_point_field_goal_attempts)
+            if float(self.home_two_point_field_goal_attempts) > 0:
+                try:
+                    result = float(self.home_two_point_field_goals) / \
+                        float(self.home_two_point_field_goal_attempts)
+                except TypeError:
+                    result = None
+                else:
+                    result = round(float(result), 3)
+                return result
+            else:
+                result = None
+                return result
         except TypeError:
             result = None
-        else:
-            result = round(float(result), 3)
-        return result
+            return result
 
     @int_property_decorator
     def home_free_throws(self):

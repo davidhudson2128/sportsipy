@@ -305,6 +305,7 @@ class TestNBABoxscore:
     def test_home_two_point_field_goal_percentage_calc(self):
         fake_none = PropertyMock(return_value=None)
         fake_int = PropertyMock(return_value=5)
+        fake_zero = PropertyMock(return_value=0.0)
 
         type(self.boxscore).home_two_point_field_goals = fake_none
         type(self.boxscore).home_two_point_field_goal_attempts = fake_none
@@ -319,11 +320,17 @@ class TestNBABoxscore:
 
         assert self.boxscore.home_two_point_field_goal_percentage is None
 
+        type(self.boxscore).home_two_point_field_goals = fake_zero
+        type(self.boxscore).home_two_point_field_goal_attempts = fake_zero
+
+        assert self.boxscore.home_two_point_field_goal_percentage is None
+
         type(self.boxscore).home_two_point_field_goals = fake_int
         type(self.boxscore).home_two_point_field_goal_attempts = fake_int
 
         assert isinstance(
             self.boxscore.home_two_point_field_goal_percentage, float)
+
 
     def test_game_summary_with_no_scores_returns_none(self):
         result = Boxscore(None)._parse_summary(pq(
