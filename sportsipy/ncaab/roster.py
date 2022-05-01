@@ -1,3 +1,5 @@
+import pprint
+
 import pandas as pd
 import re
 from functools import wraps
@@ -32,6 +34,7 @@ def _int_property_decorator(func):
         except ValueError:
             # If there is no value, default to None
             return None
+
     return wrapper
 
 
@@ -47,6 +50,7 @@ def _float_property_decorator(func):
         except ValueError:
             # If there is no value, default to None
             return None
+
     return wrapper
 
 
@@ -59,6 +63,7 @@ def _most_recent_decorator(func):
         index = seasons.index(season)
         prop = func(*args)
         return prop[index]
+
     return wrapper
 
 
@@ -91,6 +96,7 @@ class Player(AbstractPlayer):
         number starting at '1' for the first time that player ID has been used
         and increments by 1 for every successive player.
     """
+
     def __init__(self, player_id):
         self._most_recent_season = ''
         self._index = None
@@ -116,7 +122,15 @@ class Player(AbstractPlayer):
 
         player_data = self._pull_player_data()
         self._find_initial_index()
+
+        # print(F"Year were trying to look at: {year_looking_at}")
+        # print(self._season)
+        # print(self._index)
+        # print(self.season)
+
         AbstractPlayer.__init__(self, player_id, self._name, player_data)
+
+        # print(self.season)
 
     def __str__(self):
         """
@@ -237,6 +251,7 @@ class Player(AbstractPlayer):
             Returns a dictionary where all stats from each table are combined
             by season to allow easy queries by year.
         """
+
         all_stats_dict = {}
 
         for table_id in ['players_totals', 'players_advanced']:
@@ -248,6 +263,7 @@ class Player(AbstractPlayer):
             all_stats_dict = self._combine_season_stats(table_items,
                                                         career_items,
                                                         all_stats_dict)
+
         return all_stats_dict
 
     def _parse_player_information(self, player_info):
@@ -352,10 +368,19 @@ class Player(AbstractPlayer):
             stats.
         """
         player_info = self._retrieve_html_page()
+
         self._parse_player_information(player_info)
         self._parse_player_position(player_info)
         all_stats = self._combine_all_stats(player_info)
+
+        # if self.player_id == 'ryan-mcadoo-1':
+        #     pprint.pprint(all_stats)
+
         setattr(self, '_season', all_stats.keys())
+
+        # if self.player_id == 'ryan-mcadoo-1':
+        #     print(f"ttttttt: {player_info}")
+
         return all_stats
 
     def _find_initial_index(self):
@@ -393,7 +418,7 @@ class Player(AbstractPlayer):
             Returns the class instance with the updated stats being referenced.
         """
         if requested_season.lower() == 'career' or \
-           requested_season == '':
+                requested_season == '':
             requested_season = 'Career'
         index = 0
         for season in self._season:
@@ -430,7 +455,7 @@ class Player(AbstractPlayer):
             'defensive_rebounds': self.defensive_rebounds,
             'defensive_win_shares': self.defensive_win_shares,
             'effective_field_goal_percentage':
-            self.effective_field_goal_percentage,
+                self.effective_field_goal_percentage,
             'field_goal_attempts': self.field_goal_attempts,
             'field_goal_percentage': self.field_goal_percentage,
             'field_goals': self.field_goals,
@@ -653,6 +678,7 @@ class Roster:
         respective stats which greatly reduces the time to return a response if
         just the names and IDs are desired. Defaults to False.
     """
+
     def __init__(self, team, year=None, slim=False):
         self._team = team
         self._slim = slim
@@ -807,7 +833,7 @@ class Roster:
             # previous year's stats. If it exists, use the previous year
             # instead.
             if not utils._url_exists(self._create_url(year)) and \
-               utils._url_exists(self._create_url(str(int(year) - 1))):
+                    utils._url_exists(self._create_url(str(int(year) - 1))):
                 year = str(int(year) - 1)
         url = self._create_url(year)
         page = self._pull_team_page(url)

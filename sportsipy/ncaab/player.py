@@ -15,15 +15,22 @@ def _cleanup(prop):
     # string as whatever have come in had an incomplete value.
     except AttributeError:
         return ''
-
+ 
 
 def _int_property_decorator(func):
     @property
     @wraps(func)
     def wrapper(*args):
+
         index = args[0]._index
+
         prop = func(*args)
-        value = _cleanup(prop[index])
+
+        try:
+            value = _cleanup(prop[index])
+        except TypeError:
+            return 0
+
         try:
             return int(value)
         except ValueError:
