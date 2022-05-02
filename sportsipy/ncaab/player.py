@@ -83,6 +83,7 @@ class AbstractPlayer:
         information will appear in one single string concatenated togather.
     """
     def __init__(self, player_id, player_name, player_data):
+
         self._player_data = player_data
         self._player_id = player_id
         self._name = player_name
@@ -122,6 +123,11 @@ class AbstractPlayer:
         self._usage_percentage = None
 
         self._parse_player_data(player_data)
+
+        # print(self._player_data)
+        # print(f"Index: {self._index}")
+        # print(f"Player id: {self._player_id}")
+        # print(f"Mins played: {self._minutes_played}")
 
     def _parse_value(self, stats, field):
         """

@@ -123,14 +123,13 @@ class Player(AbstractPlayer):
         player_data = self._pull_player_data()
         self._find_initial_index()
 
-        # print(F"Year were trying to look at: {year_looking_at}")
-        # print(self._season)
-        # print(self._index)
-        # print(self.season)
+        # print(f"Index: {self._index}")
 
         AbstractPlayer.__init__(self, player_id, self._name, player_data)
 
-        # print(self.season)
+        # print(self._player_id)
+        # print(self._season)
+        # print(self._points)
 
     def __str__(self):
         """
@@ -373,13 +372,7 @@ class Player(AbstractPlayer):
         self._parse_player_position(player_info)
         all_stats = self._combine_all_stats(player_info)
 
-        # if self.player_id == 'ryan-mcadoo-1':
-        #     pprint.pprint(all_stats)
-
         setattr(self, '_season', all_stats.keys())
-
-        # if self.player_id == 'ryan-mcadoo-1':
-        #     print(f"ttttttt: {player_info}")
 
         return all_stats
 

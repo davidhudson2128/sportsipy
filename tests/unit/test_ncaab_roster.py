@@ -1,8 +1,10 @@
+import pytest
 from flexmock import flexmock
 from mock import patch, PropertyMock
 from sportsipy.ncaab.player import (AbstractPlayer,
                                     _cleanup as _cleanup_player)
-from sportsipy.ncaab.roster import _cleanup, Player
+from sportsipy.ncaab.roster import _cleanup, Player, Roster
+from sportsipy.ncaab.teams import Teams
 
 
 def mock_pyquery(url):
@@ -17,6 +19,35 @@ def mock_pyquery(url):
 
     return MockPQ(None)
 
+def get_all_ncaab_teams():
+    all_teams = []
+    teams = Teams()
+    for team in teams._teams:
+        all_teams.append(team._abbreviation)
+
+    return all_teams
+
+def test_player_with_no_data_happy_path():
+    roster = Roster('Gonzaga')
+
+    for player in roster.players:
+        if player.player_id == "colby-brooks-1":
+            assert player._player_data == {}
+            assert player.points == 0
+            assert player.minutes_played == 0
+
+def test_player_with_no_data():
+
+    all_teams = get_all_ncaab_teams()
+
+    for i in range(len(all_teams)):
+        if i % 100 == 0:
+            roster = Roster(all_teams[i])
+            for player in roster.players:
+                if player._player_data == {}:
+                    assert player.points == 0
+                    assert player.minutes_played == 0
+
 
 class TestNCAABPlayer:
     def setup_method(self):
@@ -29,6 +60,7 @@ class TestNCAABPlayer:
         flexmock(Player) \
             .should_receive('_find_initial_index') \
             .and_return(None)
+
 
     def test_no_int_return_default_value_abstract_class(self):
         mock_field_goals = PropertyMock(return_value=[''])
@@ -108,3 +140,33 @@ class TestNCAABPlayer:
         result = player.weight
 
         assert result is None
+
+
+    # def test_player_with_no_data(self, create_player, create_roster):
+        # roster = Roster('Gonzaga')
+        #
+        # for player in roster.players:
+        #     if player.player_id == "colby-brooks-1":
+        #         print(player.points)
+        #         assert player.points == 0
+        #         assert player.minutes_played == 0
+
+        # for player in create_roster.players:
+        #     print(player.player_id)
+        #     print(player.points)
+
+
+        # print(create_player.player_id)
+        #
+        # print(create_player.points)
+
+        # assert 1 == 1
+
+        # player = Player("colby-brooks-1")
+        # print(player._player_id)
+        # print(player._position)
+        # print(player.points)
+
+
+
+
