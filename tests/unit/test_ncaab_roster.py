@@ -36,7 +36,7 @@ def test_player_with_no_data_happy_path():
             assert player.points == 0
             assert player.minutes_played == 0
 
-def test_player_with_no_data():
+def test_player_with_no_data_all_teams():
 
     all_teams = get_all_ncaab_teams()
 
