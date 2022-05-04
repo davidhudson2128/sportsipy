@@ -26,6 +26,9 @@ def _int_property_decorator(func):
 
         prop = func(*args)
 
+        if index == -1:
+            return 0
+
         try:
             value = _cleanup(prop[index])
         except TypeError:
@@ -124,10 +127,6 @@ class AbstractPlayer:
 
         self._parse_player_data(player_data)
 
-        # print(self._player_data)
-        # print(f"Index: {self._index}")
-        # print(f"Player id: {self._player_id}")
-        # print(f"Mins played: {self._minutes_played}")
 
     def _parse_value(self, stats, field):
         """

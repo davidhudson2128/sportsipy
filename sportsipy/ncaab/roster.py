@@ -1,5 +1,3 @@
-import pprint
-
 import pandas as pd
 import re
 from functools import wraps
@@ -123,13 +121,7 @@ class Player(AbstractPlayer):
         player_data = self._pull_player_data()
         self._find_initial_index()
 
-        # print(f"Index: {self._index}")
-
         AbstractPlayer.__init__(self, player_id, self._name, player_data)
-
-        # print(self._player_id)
-        # print(self._season)
-        # print(self._points)
 
     def __str__(self):
         """
@@ -410,6 +402,7 @@ class Player(AbstractPlayer):
         Player class instance
             Returns the class instance with the updated stats being referenced.
         """
+
         if requested_season.lower() == 'career' or \
                 requested_season == '':
             requested_season = 'Career'
@@ -419,6 +412,10 @@ class Player(AbstractPlayer):
                 self._index = index
                 break
             index += 1
+
+        if requested_season not in self._season:
+            self._index = -1
+
         return self
 
     def _dataframe_fields(self):
