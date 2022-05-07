@@ -384,25 +384,6 @@ class Player(AbstractPlayer):
             index += 1
 
     def __call__(self, requested_season=''):
-        """
-        Specify a different season to pull stats from.
-
-        A different season can be requested by passing the season string, such
-        as '2017-18' to the class instance.
-
-        Parameters
-        ----------
-        requested_season : string (optional)
-            A string of the requested season to query, such as '2017-18'. If
-            left blank or 'Career' is passed, the career stats will be used for
-            stats queries.
-
-        Returns
-        -------
-        Player class instance
-            Returns the class instance with the updated stats being referenced.
-        """
-
         if requested_season.lower() == 'career' or \
                 requested_season == '':
             requested_season = 'Career'

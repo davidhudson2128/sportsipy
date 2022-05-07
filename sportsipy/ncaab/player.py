@@ -26,12 +26,12 @@ def _int_property_decorator(func):
 
         prop = func(*args)
 
-        if index == -1:
-            return 0
-
         try:
             value = _cleanup(prop[index])
         except TypeError:
+            return 0
+
+        if index == -1:
             return 0
 
         try:
